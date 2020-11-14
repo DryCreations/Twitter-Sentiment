@@ -15,6 +15,6 @@ Set-ExecutionPolicy RemoteSigned
 pip3 install -r requirements.txt
 
 # run flask app
-set FLASK_APP=run.py
-FLASK_APP=run.py flask run
+set FLASK_APP=app
+flask run
 ```
