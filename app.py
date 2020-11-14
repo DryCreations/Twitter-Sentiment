@@ -5,18 +5,24 @@ import requests
 import tweepy
 import os
 from dotenv import load_dotenv
+from flask_session import Session
 load_dotenv()
 
 app = Flask(__name__,
             static_folder = "./dist",
             template_folder = "./dist")
 
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+
+app.config['SECRET_KEY'] = os.getenv('SESSION_SECRET')
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 consumer_key = os.getenv('TWITTER_CONSUMER_KEY')
 consumer_secret = os.getenv('TWITTER_CONSUMER_SECRET')
 callback = os.getenv('TWITTER_CALLBACK')
-app.secret_key = os.getenv('SESSION_SECRET')
+
 
 @app.route('/auth')
 def auth():
