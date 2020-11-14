@@ -17,7 +17,7 @@ npm run build
 cd ..
 
 # setup venv
-py -m venv env
+python -m venv env
 env\\Scripts\\activate
 
 # if the venv fails then run PowerShell as Admin and do
