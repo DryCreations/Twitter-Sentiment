@@ -50,8 +50,8 @@ def create_task():
 
     keywords = request.json['keywords']
     tweets = []
-    for tweet in tweepy.Cursor(api.search, q='test').items(10):
-        tweets.append(tweet.text)
+    for tweet in tweepy.Cursor(api.search, q='test -filter:retweets', count=100, tweet_mode="extended").items(100):
+        tweets.append(tweet._json)
     return jsonify({'tweets': tweets, 'keywords': keywords}), 201
 
 @app.route('/', defaults={'path': ''})
