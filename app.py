@@ -3,6 +3,9 @@ from random import *
 from flask_cors import CORS
 import requests
 import tweepy
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__,
             static_folder = "./dist",
@@ -10,10 +13,10 @@ app = Flask(__name__,
 
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-consumer_key = TWITTER_CONSUMER_KEY
-consumer_secret = TWITTER_CONSUMER_SECRET
-app.secret_key = SESSION_SECRET
-callback = TWITTER_CALLBACK
+consumer_key = os.getenv('TWITTER_CONSUMER_KEY')
+consumer_secret = os.getenv('TWITTER_CONSUMER_SECRET')
+callback = os.getenv('TWITTER_CALLBACK')
+app.secret_key = os.getenv('SESSION_SECRET')
 
 @app.route('/auth')
 def auth():
