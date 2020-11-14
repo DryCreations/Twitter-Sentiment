@@ -3,3 +3,9 @@ Flask-Cors
 numpy
 pandas
 requests
+nltk
+textblob
+spacy
+sklearn
+keras
+tensorflow
