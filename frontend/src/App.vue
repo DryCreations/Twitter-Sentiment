@@ -1,10 +1,11 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view/>
+    <div id="nav">
+      <router-link to="/">Tweet</router-link> |
+      <router-link to="/Chart">Chart</router-link> |
+      <router-link to="/KeyWord">Keyword</router-link>
+    </div>
   </div>
 </template>
 
@@ -22,10 +23,10 @@
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: #346eeb;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: #34aeeb;
     }
   }
 }

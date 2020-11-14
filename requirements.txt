@@ -9,3 +9,5 @@ spacy
 sklearn
 keras
 tensorflow
+tweepy
+python-dotenv
