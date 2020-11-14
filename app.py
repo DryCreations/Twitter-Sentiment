@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, abort, session, redirect
+from flask import Flask, render_template, jsonify, request, abort, session, redirect, escape
 from random import *
 from flask_cors import CORS
 import requests
@@ -48,9 +48,11 @@ def create_task():
     auth.set_access_token(token, token_secret)
     api = tweepy.API(auth)
 
-    keywords = request.json['keywords']
+    keywords = list(map(lambda s: "\"" + escape(s) + "\"", request.json['keywords']))
     tweets = []
-    for tweet in tweepy.Cursor(api.search, q='test -filter:retweets', count=100, tweet_mode="extended").items(100):
+    query = ' '.join(keywords)
+    query += ' -filter:retweets'
+    for tweet in tweepy.Cursor(api.search, q=query, count=100, tweet_mode="extended").items(100):
         tweets.append(tweet._json)
     return jsonify({'tweets': tweets, 'keywords': keywords}), 201
 
