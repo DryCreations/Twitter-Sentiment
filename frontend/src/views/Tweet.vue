@@ -13,13 +13,6 @@ export default {
   name: 'Tweet',
   components: {
     TopBar
-  },
-  created () {
-    axios.post('/api/sentiment', {
-      keywords: ['test']
-    }).then(function (response) {
-      console.log(response)
-    })
   }
 }
 </script>

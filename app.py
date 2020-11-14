@@ -45,7 +45,7 @@ def twitter_callback():
     return redirect('/')
 
 @app.route('/api/sentiment', methods=['POST'])
-def create_task():
+def get_tweets():
     if not request.json or not 'keywords' in request.json or not 'token' in session:
         abort(400)
 
@@ -61,6 +61,10 @@ def create_task():
     for tweet in tweepy.Cursor(api.search, q=query, count=100, tweet_mode="extended").items(100):
         tweets.append(tweet._json)
     return jsonify({'tweets': tweets, 'keywords': keywords}), 201
+
+@app.route('/api/check_auth', methods=['GET'])
+def check_auth():
+    return jsonify({'loggedIn': 'token' in session}), 201
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
