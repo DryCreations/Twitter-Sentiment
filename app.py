@@ -4,8 +4,12 @@ from flask_cors import CORS
 import requests
 import tweepy
 import os
+import json
 from dotenv import load_dotenv
 from flask_session import Session
+
+from backend.sentiment import Sentiment
+
 load_dotenv()
 
 app = Flask(__name__,
@@ -23,6 +27,7 @@ consumer_key = os.getenv('TWITTER_CONSUMER_KEY')
 consumer_secret = os.getenv('TWITTER_CONSUMER_SECRET')
 callback = os.getenv('TWITTER_CALLBACK')
 
+sentiment = Sentiment()
 
 @app.route('/auth')
 def auth():
@@ -60,8 +65,10 @@ def get_tweets():
     query += ' -filter:retweets'
     for tweet in tweepy.Cursor(api.search, q=query, count=100, tweet_mode="extended").items(100):
         tweet_json = tweet._json
-        tweet_json['sentiment'] = random.uniform(0, 1)
-        tweets.append(tweet_json);
+        tweets.append(tweet_json)
+
+    sentiment.get_sentiment(tweets)
+
     return jsonify({'tweets': tweets, 'keywords': keywords}), 201
 
 @app.route('/api/check_auth', methods=['GET'])

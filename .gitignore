@@ -8,6 +8,10 @@ env/
 node_modules
 /dist
 
+# datasets
+acllmdb/
+test_tweets.csv
+train_tweets.csv
 
 # local env files
 .env.local
