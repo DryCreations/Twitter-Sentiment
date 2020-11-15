@@ -63,11 +63,11 @@ def get_tweets():
     tweets = []
     query = ' '.join(keywords)
     query += ' -filter:retweets'
-    for tweet in tweepy.Cursor(api.search, q=query, count=100, tweet_mode="extended").items(100):
+    for tweet in tweepy.Cursor(api.search, q=query, count=100, tweet_mode="extended").items(1000):
         tweet_json = tweet._json
         tweets.append(tweet_json)
 
-    sentiment.get_sentiment(tweets)
+    tweets = sentiment.get_sentiment(tweets)
 
     return jsonify({'tweets': tweets, 'keywords': keywords}), 201
 

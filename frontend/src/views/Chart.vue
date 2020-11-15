@@ -84,7 +84,7 @@ export default {
       }
     },
     numAccountTweetsBarChartData: function (state) {
-      const nameList = {}
+      let nameList = {}
       for (let i = 0; i < state.data.tweets.length; i++) {
         const currentName = state.data.tweets[i].user.screen_name
         if (currentName in nameList) {
@@ -93,10 +93,18 @@ export default {
           nameList[currentName] = 1
         }
       }
+
+      nameList = Object.entries(nameList)
+
+      nameList.sort((i, o) => {
+        return o[1] - i[1]
+      })
+
+      nameList = Object.fromEntries(nameList.slice(0, 10))
+
       const tempValue = Object.values(nameList)
       const tempKeys = Object.keys(nameList)
-      console.log(tempValue)
-      console.log(tempKeys)
+
       return {
         datasets: [{
           label: 'Number of Times tweeted with keyword/s',
@@ -117,6 +125,12 @@ export default {
           xAxes: [{
             gridLines: {
               offsetGridLines: true
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              min: 0,
+              stepSize: 1
             }
           }]
         }

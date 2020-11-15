@@ -6,9 +6,29 @@ from typing import Tuple
 from keras.models import model_from_json
 from keras.preprocessing.sequence import pad_sequences
 from nltk.corpus import stopwords
-from sentiment_lstm_keras import clean
+import re
 
-stop_words = set(stopwords.words('english')) 
+from nltk.tokenize import word_tokenize
+
+
+# from backend.sentiment_lstm_keras import clean
+
+stop_words = set(stopwords.words('english'))
+def clean(tweets: list) -> list:
+    def _clean(s: str) -> str:
+        s = re.sub(r"(?:\@|\#|\$|http?\://|https?\://|www)\S+", "", s)
+        s = ' '.join(s.split())
+        s = re.sub(r'\s+', ' ', s, flags=re.I)
+        s = re.sub('[^a-zA-z0-9\s]', '', s)
+        tokens = word_tokenize(s)
+        filtered = [w for w in tokens if not w in stop_words]
+        s = ' '.join(filtered)
+        s = re.sub('(\\b[A-Za-z] \\b|\\b [A-Za-z]\\b)', '', s)
+        return s
+    for tweet in tweets:
+        tweet['cleaned'] = _clean(tweet['full_text'])
+
+# stop_words = set(stopwords.words('english'))
 class Sentiment:
 
     def __init__(self):
@@ -31,9 +51,12 @@ class Sentiment:
         batch_size = 64
         if len(tweets) < batch_size: batch_size = len(tweets)
 
-        tweet_bodies = [t['full_text'] for t in tweets]
-        tweet_bodies = clean(tweet_bodies)
-        tokenized_tweets = self.tokenizer.texts_to_sequences(tweet_bodies)
+        clean(tweets)
+
+        tweets = [t for t in tweets if len(t['cleaned']) > 0]
+        cleaned = [t['cleaned'] for t in tweets]
+
+        tokenized_tweets = self.tokenizer.texts_to_sequences(cleaned)
         tokenized_tweets = pad_sequences(tokenized_tweets, maxlen=39, dtype='int32', value=0)
         results = self.model.predict(tokenized_tweets, batch_size=batch_size, verbose=2)
         sentiment = ['positive' if argmax(s) == 1 else 'negative' for s in results]
@@ -41,3 +64,4 @@ class Sentiment:
         for i in range(len(tweets)):
             tweets[i]['sentiment'] = sentiment[i]
             tweets[i]['confidence'] = json.dumps(str(confidence[i]))
+        return tweets
