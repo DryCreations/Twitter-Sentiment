@@ -22,6 +22,11 @@
 
 #nav {
   padding: 30px;
+  overflow: hidden;
+  background-color: #d1fff2;
+  position: fixed; /* Set the navbar to fixed position */
+  bottom: 0px; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
 
   a {
     font-weight: bold;
