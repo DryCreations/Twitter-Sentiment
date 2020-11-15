@@ -9,9 +9,12 @@ node_modules
 /dist
 
 # datasets
-acllmdb/
+aclImdb/
 test_tweets.csv
 train_tweets.csv
+train.csv
+glove.6B.100d.txt
+training.1600000.processed.noemoticon.csv
 
 # local env files
 .env.local
@@ -31,3 +34,6 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# random files
+test.py

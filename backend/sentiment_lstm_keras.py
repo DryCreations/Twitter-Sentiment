@@ -4,7 +4,6 @@ import pickle
 import random
 import pandas as pd
 import tensorflow as tf
-from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize 
 from numpy import asarray, zeros
 from keras.models import Sequential

@@ -5,8 +5,10 @@ from numpy import argmax
 from typing import Tuple
 from keras.models import model_from_json
 from keras.preprocessing.sequence import pad_sequences
+from nltk.corpus import stopwords
 from sentiment_lstm_keras import clean
 
+stop_words = set(stopwords.words('english')) 
 class Sentiment:
 
     def __init__(self):
