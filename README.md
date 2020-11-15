@@ -26,13 +26,6 @@ npm run build
 # change directory to root
 cd ..
 
-# setup venv
-python3 -m venv env
-env\\Scripts\\activate
-
-# if the venv fails then run PowerShell as Admin and do
-Set-ExecutionPolicy RemoteSigned
-
 # python libraries
 pip3 install -r requirements.txt
 python3 setup.py

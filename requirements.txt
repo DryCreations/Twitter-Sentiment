@@ -8,6 +8,6 @@ textblob
 spacy
 sklearn
 keras
-tensorflow
+tensorflow-gpu
 tweepy
 python-dotenv
