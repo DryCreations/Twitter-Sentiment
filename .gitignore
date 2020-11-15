@@ -2,6 +2,8 @@ __pycache__
 env/
 .env
 
+/flask_session
+
 .DS_Store
 node_modules
 /dist

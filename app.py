@@ -1,22 +1,28 @@
 from flask import Flask, render_template, jsonify, request, abort, session, redirect, escape
-from random import *
+import random
 from flask_cors import CORS
 import requests
 import tweepy
 import os
 from dotenv import load_dotenv
+from flask_session import Session
 load_dotenv()
 
 app = Flask(__name__,
-            static_folder = "./dist",
+            static_folder = "./dist/static",
             template_folder = "./dist")
 
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+
+app.config['SECRET_KEY'] = os.getenv('SESSION_SECRET')
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 consumer_key = os.getenv('TWITTER_CONSUMER_KEY')
 consumer_secret = os.getenv('TWITTER_CONSUMER_SECRET')
 callback = os.getenv('TWITTER_CALLBACK')
-app.secret_key = os.getenv('SESSION_SECRET')
+
 
 @app.route('/auth')
 def auth():
@@ -39,7 +45,7 @@ def twitter_callback():
     return redirect('/')
 
 @app.route('/api/sentiment', methods=['POST'])
-def create_task():
+def get_tweets():
     if not request.json or not 'keywords' in request.json or not 'token' in session:
         abort(400)
 
@@ -53,8 +59,14 @@ def create_task():
     query = ' '.join(keywords)
     query += ' -filter:retweets'
     for tweet in tweepy.Cursor(api.search, q=query, count=100, tweet_mode="extended").items(100):
-        tweets.append(tweet._json)
+        tweet_json = tweet._json
+        tweet_json['sentiment'] = random.uniform(0, 1)
+        tweets.append(tweet_json);
     return jsonify({'tweets': tweets, 'keywords': keywords}), 201
+
+@app.route('/api/check_auth', methods=['GET'])
+def check_auth():
+    return jsonify({'loggedIn': 'token' in session}), 201
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')

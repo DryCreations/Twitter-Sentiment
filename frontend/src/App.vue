@@ -6,6 +6,8 @@
       <router-link to="/Chart">Chart</router-link> |
       <router-link to="/KeyWord">Keyword</router-link>
     </div>
+
+    <p>{{ isLoggedIn ? 'yes' : 'no' }}</p>
   </div>
 </template>
 
@@ -31,3 +33,16 @@
   }
 }
 </style>
+
+<script>
+import { mapState } from 'vuex'
+
+export default {
+  computed: {
+    ...mapState(['isLoggedIn'])
+  },
+  created () {
+    this.$store.dispatch('check_login')
+  }
+}
+</script>
