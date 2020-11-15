@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Tweet
+    component: KeyWord
   },
   {
     path: '/Chart',
@@ -18,9 +18,9 @@ const routes = [
     component: Chart
   },
   {
-    path: '/KeyWord',
-    name: 'KeyWord',
-    component: KeyWord
+    path: '/Tweet',
+    name: 'Tweet',
+    component: Tweet
   }
 ]
 

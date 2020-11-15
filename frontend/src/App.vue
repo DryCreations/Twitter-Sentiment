@@ -2,8 +2,8 @@
   <div id="app">
     <router-view/>
     <div id="nav">
-      <router-link to="/">Tweet</router-link> |
-      <router-link to="/KeyWord">Keyword</router-link> |
+      <router-link to="/">Keyword</router-link> |
+      <router-link to="/Tweet">Tweet</router-link> |
       <router-link to="/Chart">Chart</router-link>
     </div>
 
