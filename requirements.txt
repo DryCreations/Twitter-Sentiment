@@ -1,3 +1,4 @@
+tensorflow-gpu
 Flask
 Flask-Cors
 numpy
@@ -8,6 +9,6 @@ textblob
 spacy
 sklearn
 keras
-tensorflow-gpu
 tweepy
 python-dotenv
+flask_session
