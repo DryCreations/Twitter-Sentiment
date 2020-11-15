@@ -3,6 +3,7 @@
     <TopBar title="Chart"/>
     <PieChart v-if="displayCharts" :pieChartData="sentimentPieChartData" :pieOptions="sentimentPieChartOptions"/>
     <BarChart v-if="displayCharts" :barChartData="numAccountTweetsBarChartData" :barOptions="numAccountTweetsBarChartOptions"/>
+    <BarChart v-if="displayCharts" :barChartData="commonWordsTweetsBarChartData" :barOptions="commonWordsTweetsBarChartOptions"/>
     <LineChart v-if="displayCharts" :lineChartData="totalTweetsLineChartData" :lineOptions="totalTweetsLineOptions"/>
   </div>
 </template>
@@ -122,6 +123,47 @@ export default {
       }
     }
   }),
+  commonWordsTweetsBarChartData: function (state) {
+    const wordList = {}
+    for (let i = 0; i < state.data.tweets.length; i++) {
+      const words = state.data.tweets[i].full_text.split(' ')
+      for (let j = 0; j < words.length; j++) {
+        if (words[j] in wordList) {
+          wordList[words]++
+        } else {
+          wordList[words] = 1
+        }
+      }
+    }
+    const tempValue = Object.values(wordList)
+    const tempKeys = Object.keys(wordList)
+    console.log(tempValue)
+    console.log(tempKeys)
+    return {
+      datasets: [{
+        label: 'Number of Times tweeted with keyword/s',
+        barPercentage: 0.5,
+        barThickness: 10,
+        maxBarThickness: 8,
+        minBarLength: 2,
+        data: tempValue,
+        backgroundColor: '#2d63e0'
+      }],
+      // These labels appear in the legend and in the tooltips when hovering different arcs
+      labels: tempKeys
+    }
+  },
+  commonWordsTweetsBarChartOptions: function (state) {
+    return {
+      scales: {
+        xAxes: [{
+          gridLines: {
+            offsetGridLines: true
+          }
+        }]
+      }
+    }
+  },
   name: 'Chart',
   components: {
     TopBar,
