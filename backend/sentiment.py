@@ -1,12 +1,14 @@
-import logging
+import json
 import pickle
+import logging
 from numpy import argmax
 from typing import Tuple
 from keras.models import model_from_json
 from keras.preprocessing.sequence import pad_sequences
-import json
+from nltk.corpus import stopwords
+from sentiment_lstm_keras import clean
 
-
+stop_words = set(stopwords.words('english')) 
 class Sentiment:
 
     def __init__(self):
@@ -30,6 +32,7 @@ class Sentiment:
         if len(tweets) < batch_size: batch_size = len(tweets)
 
         tweet_bodies = [t['full_text'] for t in tweets]
+        tweet_bodies = clean(tweet_bodies)
         tokenized_tweets = self.tokenizer.texts_to_sequences(tweet_bodies)
         tokenized_tweets = pad_sequences(tokenized_tweets, maxlen=39, dtype='int32', value=0)
         results = self.model.predict(tokenized_tweets, batch_size=batch_size, verbose=2)
