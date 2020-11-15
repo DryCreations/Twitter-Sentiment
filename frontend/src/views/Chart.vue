@@ -2,8 +2,8 @@
   <div class="Chart">
     <TopBar title="Chart"/>
     <PieChart v-if="displayCharts" :pieChartData="sentimentPieChartData" :pieOptions="sentimentPieChartOptions"/>
-    <BarChart v-if="displayCharts" :barChartData="numAccountTweetsBarChartData" :numAccountTweetsBarChartOptions="barOptions"/>
-    <LineChart v-if="displayCharts" :lineChartData="lineChartData" :lineOptions="lineOptions"/>
+    <BarChart v-if="displayCharts" :barChartData="numAccountTweetsBarChartData" :barOptions="numAccountTweetsBarChartOptions"/>
+    <LineChart v-if="displayCharts" :lineChartData="totalTweetsLineChartData" :lineOptions="totalTweetsLineOptions"/>
   </div>
 </template>
 
@@ -17,37 +17,41 @@ import LineChart from '@/components/LineChart.vue'
 import { mapState } from 'vuex'
 
 export default {
-  data: () => ({
-    totalTweetsLineChartData: {
-      datasets: [{
-        label: 'Total Tweets',
-        data: [20, 70, 50, 30, 123, 47, 56],
-        backgroundColor: '#f87979'
-      }],
-      // These labels appear in the legend and in the tooltips when hovering different arcs
-      labels: [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
-      ]
-    },
-    totalTweetsLineOptions: {
-      scales: {
-        yAxes: [{
-          stacked: false
-        }]
-      }
-    }
-  }),
   computed: mapState({
     displayCharts: function (state) {
       console.log(state.searchCompleted)
       console.log(state.pendingSearch)
       return state.searchCompleted && !state.pendingSearch
+    },
+    totalTweetsLineChartData: function (state) {
+      const nameList = { Sun: 0, Mon: 0, Tue: 0, Wed: 0, Thu: 0, Fri: 0, Sat: 0 }
+      for (let i = 0; i < state.data.tweets.length; i++) {
+        if (state.data.tweets[i].created_at.split(' ')[0] in nameList) {
+          nameList[state.data.tweets[i].created_at.split(' ')[0]]++
+        }
+      }
+      const tempValue = Object.values(nameList)
+      const tempKeys = Object.keys(nameList)
+      console.log(tempValue)
+      console.log(tempKeys)
+      return {
+        datasets: [{
+          label: 'Total Tweets',
+          data: tempValue,
+          backgroundColor: '#f87979'
+        }],
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: tempKeys
+      }
+    },
+    totalTweetsLineOptions: function (state) {
+      return {
+        scales: {
+          yAxes: [{
+            stacked: false
+          }]
+        }
+      }
     },
     sentimentPieChartData: function (state) {
       let positive = 0
@@ -127,3 +131,6 @@ export default {
   }
 }
 </script>
+<style>
+.Chart{margin-bottom: 100px;}
+</style>
