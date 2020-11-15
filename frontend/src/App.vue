@@ -3,8 +3,8 @@
     <router-view/>
     <div id="nav">
       <router-link to="/">Tweet</router-link> |
-      <router-link to="/Chart">Chart</router-link> |
-      <router-link to="/KeyWord">Keyword</router-link>
+      <router-link to="/KeyWord">Keyword</router-link> |
+      <router-link to="/Chart">Chart</router-link>     
     </div>
 
     <p>{{ isLoggedIn ? 'yes' : 'no' }}</p>
