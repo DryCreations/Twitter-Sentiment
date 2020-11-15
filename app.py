@@ -63,7 +63,7 @@ def get_tweets():
     tweets = []
     query = ' '.join(keywords)
     query += ' -filter:retweets'
-    for tweet in tweepy.Cursor(api.search, q=query, count=100, tweet_mode="extended", result_type="popular", lang="en").items(1000):
+    for tweet in tweepy.Cursor(api.search, q=query, count=100, tweet_mode="extended", result_type="mixed", lang="en").items(1000):
         tweet_json = tweet._json
         tweets.append(tweet_json)
 
