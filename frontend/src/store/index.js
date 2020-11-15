@@ -7,7 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     isLoggedIn: false,
-    data: {}
+    data: {},
+    searchTerms: []
   },
   mutations: {
     set_login: (state, event) => {
@@ -15,6 +16,9 @@ export default new Vuex.Store({
     },
     set_data: (state, event) => {
       state.data = event.data
+    },
+    add_search: (state, event) => {
+      state.searchTerms.push(event.data)
     }
   },
   actions: {
@@ -29,8 +33,11 @@ export default new Vuex.Store({
         keywords: keywords
       }).then((response) => {
         console.log(response)
-        state.commit(state, response)
+        state.commit('set_data', response)
       })
+    },
+    add_keyword: (state, keyword) => {
+      state.commit('add_search', { data: keyword })
     }
   },
   modules: {

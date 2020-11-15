@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request, abort, session, redirect, escape
-from random import *
+import random
 from flask_cors import CORS
 import requests
 import tweepy
@@ -9,7 +9,7 @@ from flask_session import Session
 load_dotenv()
 
 app = Flask(__name__,
-            static_folder = "./dist",
+            static_folder = "./dist/static",
             template_folder = "./dist")
 
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
@@ -59,7 +59,9 @@ def get_tweets():
     query = ' '.join(keywords)
     query += ' -filter:retweets'
     for tweet in tweepy.Cursor(api.search, q=query, count=100, tweet_mode="extended").items(100):
-        tweets.append(tweet._json)
+        tweet_json = tweet._json
+        tweet_json['sentiment'] = random.uniform(0, 1)
+        tweets.append(tweet_json);
     return jsonify({'tweets': tweets, 'keywords': keywords}), 201
 
 @app.route('/api/check_auth', methods=['GET'])

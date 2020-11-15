@@ -1,18 +1,22 @@
 <template>
   <div class="Tweet">
     <TopBar title="Tweet"/>
+
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import TopBar from '@/components/TopBar.vue'
-import axios from 'axios'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Tweet',
   components: {
     TopBar
+  },
+  computed: {
+    ...mapState(['data'])
   }
 }
 </script>
