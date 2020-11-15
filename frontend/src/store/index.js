@@ -8,7 +8,9 @@ export default new Vuex.Store({
   state: {
     isLoggedIn: false,
     data: {},
-    searchTerms: []
+    searchTerms: [],
+    searchCompleted: false,
+    pendingSearch: false
   },
   mutations: {
     set_login: (state, event) => {
@@ -19,6 +21,12 @@ export default new Vuex.Store({
     },
     add_search: (state, event) => {
       state.searchTerms.push(event.data)
+    },
+    search_status: (state, event) => {
+      state.searchCompleted = event.data
+    },
+    pending_query_status: (state, event) => {
+      state.pendingSearch = event.data
     }
   },
   actions: {
@@ -29,11 +37,14 @@ export default new Vuex.Store({
       })
     },
     get_tweets: (state, keywords) => {
+      state.commit('pending_query_status', { data: true })
       axios.post('/api/sentiment', {
         keywords: keywords
       }).then((response) => {
         console.log(response)
         state.commit('set_data', response)
+        state.commit('search_status', { data: true })
+        state.commit('pending_query_status', { data: false })
       })
     },
     add_keyword: (state, keyword) => {

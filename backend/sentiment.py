@@ -7,7 +7,6 @@ from keras.models import model_from_json
 from keras.preprocessing.sequence import pad_sequences
 from sentiment_lstm_keras import clean
 
-
 class Sentiment:
 
     def __init__(self):

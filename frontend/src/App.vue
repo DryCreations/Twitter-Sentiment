@@ -2,9 +2,9 @@
   <div id="app">
     <router-view/>
     <div id="nav">
-      <router-link to="/">Tweet</router-link> |
-      <router-link to="/KeyWord">Keyword</router-link> |
-      <router-link to="/Chart">Chart</router-link>     
+      <router-link to="/">Keyword</router-link> |
+      <router-link to="/Tweet">Tweet</router-link> |
+      <router-link to="/Chart">Chart</router-link>
     </div>
 
     <p>{{ isLoggedIn ? 'yes' : 'no' }}</p>
@@ -22,6 +22,11 @@
 
 #nav {
   padding: 30px;
+  overflow: hidden;
+  background-color: #d1fff2;
+  position: fixed; /* Set the navbar to fixed position */
+  bottom: 0px; /* Position the navbar at the top of the page */
+  width: 100%; /* Full width */
 
   a {
     font-weight: bold;
