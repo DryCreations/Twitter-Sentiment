@@ -1,7 +1,10 @@
 <template>
   <div class="Tweet">
     <TopBar title="Tweet"/>
-
+    <div v-for="tweet in data.tweets" class="tweetCard" v-bind:key="tweet.id">
+      <p> {{ tweet.full_text }} </p>
+      <p> sentiment: {{ tweet.sentiment }} </p>
+    </div>
   </div>
 </template>
 
@@ -20,3 +23,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.tweetCard {
+  padding: 10px;
+}
+</style>
