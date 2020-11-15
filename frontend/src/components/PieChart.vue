@@ -1,10 +1,10 @@
 <script>
 import { Pie } from 'vue-chartjs'
 export default {
-  props: ['chartData', 'options'],
+  props: ['pieChartData', 'pieOptions'],
   extends: Pie,
   mounted () {
-    this.renderChart(this.chartData, this.options)
+    this.renderChart(this.pieChartData, this.pieOptions)
   }
 }
 
