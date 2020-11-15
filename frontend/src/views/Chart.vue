@@ -1,9 +1,9 @@
 <template>
   <div class="Chart">
     <TopBar title="Chart"/>
-    <PieChart :pieChartData="sentimentPieChartData" :pieOptions="sentimentPieChartOptions"/>
-    <BarChart :barChartData="numAccountTweetsBarChartData" :numAccountTweetsBarChartOptions="barOptions"/>
-    <LineChart :lineChartData="lineChartData" :lineOptions="lineOptions"/>
+    <PieChart v-if="displayCharts" :pieChartData="sentimentPieChartData" :pieOptions="sentimentPieChartOptions"/>
+    <BarChart v-if="displayCharts" :barChartData="numAccountTweetsBarChartData" :numAccountTweetsBarChartOptions="barOptions"/>
+    <LineChart v-if="displayCharts" :lineChartData="lineChartData" :lineOptions="lineOptions"/>
   </div>
 </template>
 
@@ -44,6 +44,11 @@ export default {
     }
   }),
   computed: mapState({
+    displayCharts: function (state) {
+      console.log(state.searchCompleted)
+      console.log(state.pendingSearch)
+      return state.searchCompleted && !state.pendingSearch
+    },
     sentimentPieChartData: function (state) {
       let positive = 0
       let negative = 0
