@@ -83,7 +83,6 @@ export default {
       }
     },
     numAccountTweetsBarChartData: function (state) {
-      const nameList = {}
       for (let i = 0; i < state.data.tweets.length; i++) {
         const currentName = state.data.tweets[i].user.screen_name
         if (currentName in nameList) {

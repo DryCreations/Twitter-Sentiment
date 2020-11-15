@@ -4,7 +4,7 @@ import pickle
 import random
 import pandas as pd
 import tensorflow as tf
-from nltk.tokenize import word_tokenize 
+from nltk.tokenize import word_tokenize
 from numpy import asarray, zeros
 from keras.models import Sequential
 from keras.layers import LSTM, Flatten, SpatialDropout1D, Dense
@@ -15,13 +15,13 @@ from keras.preprocessing.sequence import pad_sequences
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from nltk.corpus import twitter_samples, stopwords
-from imdb import get_imdb
+from backend.imdb import get_imdb
 
 # NOTE: following the guide found here
 # https://www.kaggle.com/ngyptr/lstm-sentiment-analysis-keras
 
 
-stop_words = set(stopwords.words('english')) 
+stop_words = set(stopwords.words('english'))
 def clean(tweets: list) -> list:
     def _clean(s: str) -> str:
         s = re.sub(r"(?:\@|\#|\$|http?\://|https?\://|www)\S+", "", s)
@@ -141,9 +141,9 @@ batch_size = 512
 epochs = 15
 with tf.device("gpu:0"):
     model.fit(
-        X_train, Y_train, 
-        epochs=epochs, 
-        batch_size=batch_size, 
+        X_train, Y_train,
+        epochs=epochs,
+        batch_size=batch_size,
         verbose=2
     )
 
