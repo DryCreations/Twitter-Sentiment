@@ -2,8 +2,8 @@
   <div class="Chart">
     <TopBar title="Chart"/>
     <PieChart :pieChartData="sentimentPieChartData" :pieOptions="sentimentPieChartOptions"/>
-    <!-- <BarChart :barChartData="barChartData" :barOptions="barOptions"/>
-    <LineChart :lineChartData="lineChartData" :lineOptions="lineOptions"/> -->
+    <BarChart :barChartData="numAccountTweetsBarChartData" :numAccountTweetsBarChartOptions="barOptions"/>
+    <LineChart :lineChartData="lineChartData" :lineOptions="lineOptions"/>
   </div>
 </template>
 
@@ -11,42 +11,38 @@
 // @ is an alias to /src
 import TopBar from '@/components/TopBar.vue'
 import PieChart from '@/components/PieChart.vue'
-// import BarChart from '@/components/BarChart.vue'
-// import LineChart from '@/components/LineChart.vue'
+import BarChart from '@/components/BarChart.vue'
+import LineChart from '@/components/LineChart.vue'
 
 import { mapState } from 'vuex'
 
 export default {
-  // data: () => ({
-  //   lineChartData: {
-  //     datasets: [{
-  //       label: 'Line 1',
-  //       data: [20, 70, 50, 30, 123, 47, 56],
-  //       backgroundColor: '#f87979'
-  //     }, {
-  //       label: 'Line 2',
-  //       data: [70, 50, 30, 123, 47, 56, 20],
-  //       backgroundColor: '#45f542'
-  //     }],
-  //     // These labels appear in the legend and in the tooltips when hovering different arcs
-  //     labels: [
-  //       'Sunday',
-  //       'Monday',
-  //       'Tuesday',
-  //       'Wednesday',
-  //       'Thursday',
-  //       'Friday',
-  //       'Saturday'
-  //     ]
-  //   },
-  //   lineOptions: {
-  //     scales: {
-  //       yAxes: [{
-  //         stacked: false
-  //       }]
-  //     }
-  //   }
-  // }),
+  data: () => ({
+    totalTweetsLineChartData: {
+      datasets: [{
+        label: 'Total Tweets',
+        data: [20, 70, 50, 30, 123, 47, 56],
+        backgroundColor: '#f87979'
+      }],
+      // These labels appear in the legend and in the tooltips when hovering different arcs
+      labels: [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+      ]
+    },
+    totalTweetsLineOptions: {
+      scales: {
+        yAxes: [{
+          stacked: false
+        }]
+      }
+    }
+  }),
   computed: mapState({
     sentimentPieChartData: function (state) {
       let positive = 0
@@ -76,56 +72,53 @@ export default {
         responsive: true,
         maintainAspectRatio: false
       }
+    },
+    numAccountTweetsBarChartData: function (state) {
+      const nameList = {}
+      for (let i = 0; i < state.data.tweets.length; i++) {
+        const currentName = state.data.tweets[i].user.screen_name
+        if (currentName in nameList) {
+          nameList[currentName]++
+        } else {
+          nameList[currentName] = 1
+        }
+      }
+      const tempValue = Object.values(nameList)
+      const tempKeys = Object.keys(nameList)
+      console.log(tempValue)
+      console.log(tempKeys)
+      return {
+        datasets: [{
+          label: 'Number of Times tweeted with keyword/s',
+          barPercentage: 0.5,
+          barThickness: 10,
+          maxBarThickness: 8,
+          minBarLength: 2,
+          data: tempValue,
+          backgroundColor: '#2d63e0'
+        }],
+        // These labels appear in the legend and in the tooltips when hovering different arcs
+        labels: tempKeys
+      }
+    },
+    numAccountTweetsBarChartOptions: function (state) {
+      return {
+        scales: {
+          xAxes: [{
+            gridLines: {
+              offsetGridLines: true
+            }
+          }]
+        }
+      }
     }
-    // barChartData: function (state) {
-    //   return {
-    //     datasets: [{
-    //       label: 'Neg',
-    //       barPercentage: 0.5,
-    //       barThickness: 10,
-    //       maxBarThickness: 8,
-    //       minBarLength: 2,
-    //       data: [20, 70, 50, 30, 123, 47, 56],
-    //       backgroundColor: '#f87979'
-    //     }, {
-    //       label: 'Pos',
-    //       barPercentage: 0.5,
-    //       barThickness: 10,
-    //       maxBarThickness: 8,
-    //       minBarLength: 2,
-    //       data: [70, 50, 30, 123, 47, 56, 20],
-    //       backgroundColor: '#45f542'
-    //     }],
-    //     // These labels appear in the legend and in the tooltips when hovering different arcs
-    //     labels: [
-    //       'Sunday',
-    //       'Monday',
-    //       'Tuesday',
-    //       'Wednesday',
-    //       'Thursday',
-    //       'Friday',
-    //       'Saturday'
-    //     ]
-    //   }
-    // },
-    // barOptions: function (state) {
-    //   return {
-    //     scales: {
-    //       xAxes: [{
-    //         gridLines: {
-    //           offsetGridLines: true
-    //         }
-    //       }]
-    //     }
-    //   }
-    // }
   }),
   name: 'Chart',
   components: {
     TopBar,
-    PieChart
-    // BarChart,
-    // LineChart
+    PieChart,
+    BarChart,
+    LineChart
   }
 }
 </script>
